@@ -69,19 +69,6 @@ make clean
 - **WezTerm**: GPU-accelerated terminal emulator with custom keybindings
 - **i3 Config**: Tiling window manager setup (for Linux)
 - **Development Tools**: Python, Git, and other utilities
-- **GitHub Actions CI**: Automated linting and validation workflows
-
-## 🔄 CI/CD
-
-This repository uses GitHub Actions for continuous integration:
-
-- **Shell Script Linting**: Checks all shell scripts for syntax errors and best practices
-- **Lua Linting**: Validates Neovim Lua configurations
-- **Markdown Linting**: Ensures documentation follows best practices
-- **Cross-platform Testing**: Tests installation scripts on both macOS and Linux
-
-The CI workflow runs automatically on pushes to the main branch and pull requests, helping maintain code quality and preventing issues before they're merged.
-
 ## 🧩 Components
 
 ### Neovim
