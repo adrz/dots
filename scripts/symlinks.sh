@@ -13,6 +13,37 @@ if [ ! -f "$CONFIG_FILE" ]; then
     exit 1
 fi
 
+validate_symlinks_config() {
+    info "Validating symlinks configuration..."
+    local has_error=false
+
+    # Read dotfile links from the config file and validate
+    while IFS=: read -r source target || [ -n "$source" ]; do
+        # Skip empty or invalid lines in the config file
+        if [[ -z "$source" || -z "$target" || "$source" == \#* ]]; then
+            continue
+        fi
+
+        # Evaluate variables
+        source=$(eval echo "$source")
+        target=$(eval echo "$target")
+
+        # Check if the source file exists
+        if [ ! -e "$source" ]; then
+            error "Error: Source file '$source' not found. This would cause an error during linking."
+            has_error=true
+        else
+            success "Valid source: $source"
+        fi
+    done <"$CONFIG_FILE"
+
+    if [ "$has_error" = true ]; then
+        exit 1
+    else
+        success "Symlinks configuration is valid!"
+    fi
+}
+
 create_symlinks() {
     info "Creating symbolic links..."
 
@@ -92,14 +123,17 @@ if [ "$(basename "$0")" = "$(basename "${BASH_SOURCE[0]}")" ]; then
         fi
         delete_symlinks
         ;;
+    "--validate-only")
+        validate_symlinks_config
+        ;;
     "--help")
         # Display usage/help message
-        echo "Usage: $0 [--create | --delete [--include-files] | --help]"
+        echo "Usage: $0 [--create | --delete [--include-files] | --validate-only | --help]"
         ;;
     *)
         # Display an error message for unknown arguments
         error "Error: Unknown argument '$1'"
-        error "Usage: $0 [--create | --delete [--include-files] | --help]"
+        error "Usage: $0 [--create | --delete [--include-files] | --validate-only | --help]"
         exit 1
         ;;
     esac

@@ -78,14 +78,15 @@ alias vim="nvim"
 # Use lsd (modern ls) with defaults
 alias ls="lsd -lh"
 
-# Improved cd command that lists directory contents after changing
-function cd {
-	builtin cd "$@" && lsd -lh
-}
-
 # Zoxide (better directory navigation)
 eval "$(zoxide init zsh)"
 alias cd="z"
+#
+# Improved cd command that lists directory contents after changing
+# function cd {
+#	builtin z "$@" && lsd -lh
+#}
+
 
 # Shell helpers
 eval $(thefuck --alias)  # Corrects your previous console command
