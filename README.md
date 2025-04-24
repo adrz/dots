@@ -69,7 +69,6 @@ make clean
 - **WezTerm**: GPU-accelerated terminal emulator with custom keybindings
 - **i3 Config**: Tiling window manager setup (for Linux)
 - **Development Tools**: Python, Git, and other utilities
-
 ## 🧩 Components
 
 ### Neovim

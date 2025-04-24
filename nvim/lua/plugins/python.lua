@@ -1,9 +1,9 @@
 return {
-  -- Configure Python linting and formatting with Ruff
   {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
+        zls = {},
         -- Configure Ruff LSP
         ruff_lsp = {
           keys = {
@@ -47,9 +47,7 @@ return {
         end,
       },
     },
-  },
-
-  -- Configure formatters
+  }, -- Configure formatters
   {
     "stevearc/conform.nvim",
     optional = true,
@@ -58,28 +56,18 @@ return {
         python = { "ruff_format", "ruff_fix" },
       },
     },
-  },
-
-  -- Ensure required tools are installed
+  }, -- Ensure required tools are installed
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
-      vim.list_extend(opts.ensure_installed, {
-        "ruff",
-        "ruff-lsp",
-        "pyright",
-      })
+      vim.list_extend(opts.ensure_installed, { "ruff", "ruff-lsp", "pyright" })
     end,
-  },
-
-  -- Add Python test runner
+  }, -- Add Python test runner
   {
     "nvim-neotest/neotest",
     optional = true,
-    dependencies = {
-      "nvim-neotest/neotest-python",
-    },
+    dependencies = { "nvim-neotest/neotest-python" },
     opts = {
       adapters = {
         ["neotest-python"] = {

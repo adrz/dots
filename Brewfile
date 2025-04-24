@@ -37,6 +37,7 @@ cask "appcleaner"              # Application uninstaller
 cask "lulu"                    # Network firewall
 cask "stats"                   # System monitor menubar app (fixed typo: "cast" to "cask")
 cask "alt-tab"                 # Windows-style alt-tab window switcher
+cask "cursorcerer"             # magically hide your mouse with ctrl+opt+K
 
 # Development tools
 cask "visual-studio-code"      # Code editor because it's still cool
