@@ -15,3 +15,4 @@ vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 -- move half page down/up and recenter
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
+vim.keymap.set("n", "gp", ":silent %!prettier --stdin-filepath %<CR>")
