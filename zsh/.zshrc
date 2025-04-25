@@ -38,7 +38,9 @@ source $ZSH/oh-my-zsh.sh
 export EDITOR=nvim
 
 # Path configuration
-export PATH=$PATH:/usr/local/go/bin
+#export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:$HOME/.local/opt/go/bin
+export PATH=$PATH:$HOME/go/bin
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$HOME/.cargo/env
 export PATH="$PATH:/Users/dude/.local/bin"  # Added by pipx
@@ -81,6 +83,10 @@ alias ls="lsd -lh"
 # Zoxide (better directory navigation)
 eval "$(zoxide init zsh)"
 alias cd="z"
+
+# git checkout
+alias gc="git checkout"
+
 #
 # Improved cd command that lists directory contents after changing
 # function cd {
