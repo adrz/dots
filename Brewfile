@@ -9,6 +9,9 @@ brew "htop"                    # Interactive process viewer
 brew "tree"                    # Directory listing as a tree
 brew "thefuck"                 # Command correction tool
 brew "powerlevel10k"           # ZSH theme
+brew "lsd"                     # List directory contents with colors
+brew "zoxide"                  # A smarter cd command
+brew "thefuck"                 # Corrects your previous console command
 
 # ZSH plugins
 brew "zsh-autosuggestions"     # Fish-like autosuggestions for ZSH
@@ -17,6 +20,7 @@ brew "zsh-syntax-highlighting" # Fish-like syntax highlighting for ZSH
 # Version control
 brew "git"                     # Version control system
 brew "lazygit"                 # Terminal UI for git
+brew "git-delta"               # better git log/diff...
 
 # File operations
 brew "wget"                    # Internet file retriever
