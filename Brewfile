@@ -47,6 +47,8 @@ cask "cursorcerer"             # magically hide your mouse with ctrl+opt+K
 cask "visual-studio-code"      # Code editor because it's still cool
 cask "ghostty"                 # Modern terminal emulator
 cask "wezterm"                 # GPU-accelerated terminal emulator
+cask "hadolint"                # Linter for Dockerfiles
+
 
 # Applications
 cask "alfred"                  # Productivity application
