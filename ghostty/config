@@ -19,3 +19,4 @@ window-inherit-working-directory = true
 
 confirm-close-surface = false
 macos-titlebar-proxy-icon = hidden
+

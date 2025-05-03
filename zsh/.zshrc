@@ -45,6 +45,9 @@ export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$HOME/.cargo/env
 export PATH="$PATH:/Users/dude/.local/bin"  # Added by pipx
 
+# for psql
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
 # GPG terminal setting
 export GPG_TTY=$(tty)
 

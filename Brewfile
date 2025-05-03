@@ -2,6 +2,10 @@
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/core"
+tap "homebrew/aerospace"
+
+# Tilling window manager like i3
+cask "aerospace"
 
 # Terminal and shell utilities
 brew "fzf"                     # Fuzzy file finder
@@ -47,6 +51,8 @@ cask "cursorcerer"             # magically hide your mouse with ctrl+opt+K
 cask "visual-studio-code"      # Code editor because it's still cool
 cask "ghostty"                 # Modern terminal emulator
 cask "wezterm"                 # GPU-accelerated terminal emulator
+cask "hadolint"                # Linter for Dockerfiles
+
 
 # Applications
 cask "alfred"                  # Productivity application
