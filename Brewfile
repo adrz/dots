@@ -2,6 +2,10 @@
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/core"
+tap "homebrew/aerospace"
+
+# Tilling window manager like i3
+cask "aerospace"
 
 # Terminal and shell utilities
 brew "fzf"                     # Fuzzy file finder

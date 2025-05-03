@@ -3,7 +3,7 @@ local wezterm = require("wezterm")
 
 -- This will hold the configuration.
 local config = wezterm.config_builder()
-
+local act = wezterm.action
 config.send_composed_key_when_left_alt_is_pressed = true
 -- config.send_composed_key_when_right_alt_is_pressed = true
 config.use_dead_keys = false
@@ -52,6 +52,14 @@ config.keys = {
 	},
 }
 
+config.mouse_bindings = {
+	{
+		event = { Up = { streak = 0, button = "Middle" } },
+		mods = "NONE",
+		action = act.PasteFrom("Clipboard"),
+	},
+}
+
 -- This is where you actually apply your config choices
 
 config.color_scheme = "Batman"
@@ -61,7 +69,7 @@ config.font_size = 16
 -- config.enable_tab_bar = true
 
 -- Define an event to toggle the tab bar visibility
-config.enable_tab_bar = false
+config.enable_tab_bar = true
 config.window_decorations = "RESIZE"
 
 config.window_background_opacity = 0.8
