@@ -1,0 +1,145 @@
+
+
+[env]
+TERM = "xterm-256color"
+
+[window]
+# Slightly increased padding looks cleaner with "Buttonless"
+padding = { x = 15, y = 15 }
+decorations = "Buttonless"
+opacity = 0.7
+blur = true
+option_as_alt = "OnlyLeft"
+# Dynamic title updates based on what you are running
+dynamic_title = true 
+startup_mode = "Maximized"
+
+
+[font]
+size = 15.0
+# Explicitly defining bold/italic often helps rendering
+normal = { family = "MesloLGS Nerd Font Mono", style = "Regular" }
+bold = { family = "MesloLGS Nerd Font Mono", style = "Bold" }
+italic = { family = "MesloLGS Nerd Font Mono", style = "Italic" }
+# Slight vertical spacing tweak for "breathing room"
+offset = { x = 0, y = 1 } 
+
+[cursor]
+# "Beam" is often preferred for coding, "Block" for classic vibe
+style = { shape = "Beam", blinking = "On" }
+blink_interval = 750
+unfocused_hollow = true
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+# --- Theme: Catppuccin Mocha ---
+[colors.primary]
+background = "#1e1e2e"
+foreground = "#cdd6f4"
+dim_foreground = "#7f849c"
+bright_foreground = "#cdd6f4"
+
+[colors.cursor]
+text = "#1e1e2e"
+cursor = "#f5e0dc"
+
+[colors.vi_mode_cursor]
+text = "#1e1e2e"
+cursor = "#b4befe"
+
+[colors.search.matches]
+foreground = "#1e1e2e"
+background = "#a6e3a1"
+
+[colors.search.focused_match]
+foreground = "#1e1e2e"
+background = "#a6e3a1"
+
+[colors.footer_bar]
+foreground = "#1e1e2e"
+background = "#a6e3a1"
+
+[colors.hints.start]
+foreground = "#1e1e2e"
+background = "#f9e2af"
+
+[colors.hints.end]
+foreground = "#1e1e2e"
+background = "#a6e3a1"
+
+[colors.selection]
+text = "#1e1e2e"
+background = "#f5e0dc"
+
+[colors.normal]
+black = "#45475a"
+red = "#f38ba8"
+green = "#a6e3a1"
+yellow = "#f9e2af"
+blue = "#89b4fa"
+magenta = "#f5c2e7"
+cyan = "#94e2d5"
+white = "#bac2de"
+
+[colors.bright]
+black = "#585b70"
+red = "#f38ba8"
+green = "#a6e3a1"
+yellow = "#f9e2af"
+blue = "#89b4fa"
+magenta = "#f5c2e7"
+cyan = "#94e2d5"
+white = "#a6adc8"
+
+[colors.dim]
+black = "#45475a"
+red = "#f38ba8"
+green = "#a6e3a1"
+yellow = "#f9e2af"
+blue = "#89b4fa"
+magenta = "#f5c2e7"
+cyan = "#94e2d5"
+white = "#bac2de"
+# -------------------------------
+
+[[keyboard.bindings]]
+key = "N"
+mods = "Alt"
+chars = "~"
+
+[[keyboard.bindings]]
+key = "L"
+mods = "Alt|Shift"
+chars = "|"
+
+[[keyboard.bindings]]
+key = ":"
+mods = "Alt|Shift"
+chars = "\\"
+
+[[keyboard.bindings]]
+key = ":"
+mods = "Alt|Shift"
+chars = "\\"
+
+[[keyboard.bindings]]
+key = "("
+mods = "Alt"
+chars = "{"
+
+[[keyboard.bindings]]
+key = ")"
+mods = "Alt"
+chars = "}"
+
+[[keyboard.bindings]]
+key = "("
+mods = "Alt|Shift"
+chars = "["
+
+[[keyboard.bindings]]
+key = ")"
+mods = "Alt|Shift"
+chars = "]"
