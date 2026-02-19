@@ -1,0 +1,37 @@
+return { nil }
+-- return {
+--   {
+--     "mini-vim/mini.surround",
+--     version = "*",
+--     event = "VeryLazy",
+--     opts = {
+--       -- Disable ALL default mappings manually to prevent conflicts
+--       mappings = {
+--         add = "",
+--         delete = "",
+--         find = "",
+--         find_left = "",
+--         highlight = "",
+--         replace = "",
+--         update_n_lines = "",
+--       },
+--     },
+--     config = function(_, opts)
+--       require("mini.surround").setup(opts)
+--
+--       local map = vim.keymap.set
+--
+--       -- === VISUAL MODE (x) ===
+--       -- We use 's' to Add Surround.
+--       -- CRITICAL: We use ':<C-u>' here because it properly updates the
+--       -- visual selection markers ('< and '>) before the Lua function runs.
+--       map("x", "s", ':<C-u>lua MiniSurround.add("visual")<CR>', { silent = true, desc = "Surround Add" })
+--
+--       -- === NORMAL MODE (n) ===
+--       -- We use 'sd' (Delete) and 'sr' (Replace).
+--       -- These do NOT conflict with Flash because Flash uses just 's'.
+--       map("n", "sd", "<Cmd>lua MiniSurround.delete()<CR>", { silent = true, desc = "Surround Delete" })
+--       map("n", "sr", "<Cmd>lua MiniSurround.replace()<CR>", { silent = true, desc = "Surround Replace" })
+--     end,
+--   },
+-- }

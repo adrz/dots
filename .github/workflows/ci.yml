@@ -1,0 +1,84 @@
+name: Dotfiles CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  lint-scripts:
+    name: Lint Shell Scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install shellcheck
+        run: sudo apt-get install -y shellcheck
+
+      - name: Run shellcheck
+        run: |
+          find scripts -type f -name "*.sh" -exec shellcheck {} \;
+
+  lint-lua:
+    name: Lint Lua Files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Lua
+        uses: xpol/setup-lua@v0.3
+        with:
+          lua-version: "5.4"
+
+      - name: Install luarocks
+        run: |
+          sudo apt-get install -y luarocks
+
+      - name: Install luacheck
+        run: |
+          luarocks install luacheck
+
+      - name: Run luacheck
+        run: |
+          luacheck nvim/lua
+
+  lint-markdown:
+    name: Lint Markdown Files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: markdownlint-cli
+        uses: nosborn/github-action-markdown-cli@v3.3.0
+        with:
+          files: .
+          config_file: .markdownlint.json
+          ignore_files: "node_modules/**"
+
+  test-install:
+    name: Test Installation
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Homebrew (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" < /dev/null
+
+      - name: Test prerequisite script
+        run: |
+          chmod +x scripts/prerequisites.sh
+          # Run in a way that doesn't actually install, just checks
+          ./scripts/prerequisites.sh --check-only
+
+      - name: Validate symlinks configuration
+        run: |
+          chmod +x scripts/symlinks.sh
+          # Run in a way that validates but doesn't create symlinks
+          ./scripts/symlinks.sh --validate-only

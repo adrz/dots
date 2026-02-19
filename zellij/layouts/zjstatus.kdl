@@ -1,0 +1,49 @@
+layout {
+    pane split_direction="vertical" {
+        pane
+    }
+
+    pane size=1 borderless=true {
+        plugin location="file:~/.config/zellij/zjstatus.wasm" {
+            hide_frame_for_single_pane "true"
+
+            format_left  "{mode}#[fg=#89B4FA,bg=#181825,bold] {session}#[bg=#181825] {tabs}"
+            format_right "{command_kubectx}#[fg=#424554,bg=#181825]::{command_kubens}{datetime}"
+            format_space "#[bg=#181825]"
+
+            mode_normal          "#[bg=#89B4FA,fg=#181825,bold] NORMAL "
+            mode_tmux            "#[bg=#ffc387,fg=#181825,bold] TMUX "
+            mode_locked          "#[bg=#89B4FA,fg=#181825,bold] LOCKED "
+            mode_pane            "#[bg=#89dceb,fg=#181825,bold] PANE "
+            mode_tab             "#[bg=#b4befe,fg=#181825,bold] TAB "
+            mode_scroll          "#[bg=#f9e2af,fg=#181825,bold] SCROLL "
+            mode_enter_search    "#[bg=#8caaee,fg=#181825,bold] ENT-SEARCH "
+            mode_search          "#[bg=#8caaee,fg=#181825,bold] SEARCH "
+            mode_resize          "#[bg=#f38ba8,fg=#181825,bold] RESIZE "
+            mode_rename_tab      "#[bg=#b4befe,fg=#181825,bold] RENAME-TAB "
+            mode_rename_pane     "#[bg=#89dceb,fg=#181825,bold] RENAME-PANE "
+            mode_move            "#[bg=#f38ba8,fg=#181825,bold] MOVE "
+            mode_session         "#[bg=#f38ba8,fg=#181825,bold] SESSION "
+            mode_prompt          "#[bg=#8caaee,fg=#181825,bold] PROMPT "
+            mode_default_to_mode "tmux"
+
+            tab_normal               "#[fg=#6C7086,bg=#181825] {index} {name} {fullscreen_indicator}{sync_indicator}{floating_indicator}"
+            tab_active               "#[fg=#9399B2,bg=#181825,bold,italic] {index} {name} {fullscreen_indicator}{sync_indicator}{floating_indicator}"
+            tab_fullscreen_indicator "□ "
+            tab_sync_indicator       "  "
+            tab_floating_indicator   "󰉈 "
+
+            command_kubectx_command  "kubectx -c"
+            command_kubectx_format   "#[fg=#6C7086,bg=#181825,italic] {stdout}"
+            command_kubectx_interval "2"
+
+            command_kubens_command  "kubens -c"
+            command_kubens_format   "#[fg=#6C7086,bg=#181825]{stdout} "
+            command_kubens_interval "2"
+
+            datetime          "#[fg=#9399B2,bg=#181825] {format} "
+            datetime_format   "%A, %d %b %Y %H:%M"
+            datetime_timezone "Europe/Paris"
+        }
+    }
+}

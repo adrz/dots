@@ -359,3 +359,6 @@ _zb_path_append /opt/zerobrew/prefix/bin
 
 # opencode
 export PATH=/Users/dude/.opencode/bin:$PATH
+
+# Added by Antigravity
+export PATH="/Users/dude/.antigravity/antigravity/bin:$PATH"
