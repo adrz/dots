@@ -143,3 +143,14 @@ chars = "["
 key = ")"
 mods = "Alt|Shift"
 chars = "]"
+
+
+[[keyboard.bindings]]
+key = "T"
+mods = "Command"
+chars = "\u001Bt"
+
+[[keyboard.bindings]]
+key = "W"
+mods = "Command"
+chars = "\u001Bw"
