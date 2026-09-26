@@ -19,7 +19,7 @@ jobs:
 
       - name: Run shellcheck
         run: |
-          shellcheck -x scripts/*.sh zellij/update-plugins
+          shellcheck -x scripts/*.sh macos/*.sh zellij/update-plugins
 
   lint-lua:
     name: Lint Lua Files

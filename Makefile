@@ -1,4 +1,4 @@
-.PHONY: all install symlinks clean prereq xcode homebrew check-xcode check-brew help brew-install
+.PHONY: all install symlinks clean prereq xcode homebrew check-xcode check-brew help brew-install macos macos-apply
 
 # Default target
 all: help
@@ -75,6 +75,13 @@ xcode:
 homebrew:
 	@bash $(DOTFILES_DIR)/scripts/prerequisites.sh install_homebrew
 
+# Preview or explicitly apply the selected macOS preferences
+macos:
+	@bash "$(DOTFILES_DIR)/macos/defaults.sh" --preview
+
+macos-apply:
+	@bash "$(DOTFILES_DIR)/macos/defaults.sh" --apply
+
 # Display help
 help:
 	@echo "Usage: make [target]"
@@ -87,4 +94,6 @@ help:
 	@echo "  brew-install Install all packages from Brewfile"
 	@echo "  xcode        Install Xcode CLI tools (no prompt)"
 	@echo "  homebrew     Install Homebrew (no prompt)"
+	@echo "  macos        Preview the selected macOS preferences"
+	@echo "  macos-apply  Apply the selected macOS preferences for this user"
 	@echo "  help         Display this help message"
