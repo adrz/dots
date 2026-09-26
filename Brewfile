@@ -1,11 +1,8 @@
 # Homebrew taps
-tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/core"
-tap "homebrew/aerospace"
+tap "nikitabobko/tap"
 
 # Tilling window manager like i3
-cask "aerospace"
+cask "nikitabobko/tap/aerospace"
 
 # Terminal and shell utilities
 brew "fzf"                     # Fuzzy file finder
@@ -15,7 +12,6 @@ brew "thefuck"                 # Command correction tool
 brew "powerlevel10k"           # ZSH theme
 brew "lsd"                     # List directory contents with colors
 brew "zoxide"                  # A smarter cd command
-brew "thefuck"                 # Corrects your previous console command
 
 # ZSH plugins
 brew "zsh-autosuggestions"     # Fish-like autosuggestions for ZSH
@@ -28,7 +24,7 @@ brew "git-delta"               # better git log/diff...
 
 # File operations
 brew "wget"                    # Internet file retriever
-brew "unrar"                   # Extract files from RAR archives
+brew "sevenzip"                # Extract archives, including RAR (7zz x archive.rar)
 brew "yt-dlp"                  # Media downloader
 
 # Python development
@@ -51,7 +47,7 @@ cask "cursorcerer"             # magically hide your mouse with ctrl+opt+K
 cask "visual-studio-code"      # Code editor because it's still cool
 cask "ghostty"                 # Modern terminal emulator
 cask "wezterm"                 # GPU-accelerated terminal emulator
-cask "hadolint"                # Linter for Dockerfiles
+brew "hadolint"                # Linter for Dockerfiles
 
 
 # Applications

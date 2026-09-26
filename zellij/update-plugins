@@ -1,6 +1,46 @@
 #!/bin/bash
 
-echo "Updating zellij-forgot..."
-curl -L "https://github.com/karimould/zellij-forgot/releases/latest/download/zellij_forgot.wasm" -o ~/.config/zellij/zellij_forgot.wasm
-curl -L "https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm" -o ~/.config/zellij/zjstatus.wasm
+set -euo pipefail
+
+plugin_dir="${ZELLIJ_CONFIG_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zellij}"
+mkdir -p -- "$plugin_dir"
+
+for plugin_file in zellij_forgot.wasm zjstatus.wasm; do
+    if [ -d "$plugin_dir/$plugin_file" ]; then
+        echo "Cannot replace plugin directory: $plugin_dir/$plugin_file" >&2
+        exit 1
+    fi
+done
+
+# Stage on the destination filesystem so each final rename is atomic.
+staging_dir=$(mktemp -d "$plugin_dir/.plugin-update.XXXXXX")
+trap 'rm -rf -- "$staging_dir"' EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+download_plugin() {
+    local repository=$1
+    local filename=$2
+    local header
+
+    echo "Downloading $filename..."
+    curl --fail --location --silent --show-error \
+        "https://github.com/$repository/releases/latest/download/$filename" \
+        --output "$staging_dir/$filename"
+
+    header=$(od -An -tx1 -N8 "$staging_dir/$filename" | tr -d '[:space:]')
+    if [ "$header" != "0061736d01000000" ]; then
+        echo "Invalid WebAssembly header: $filename" >&2
+        return 1
+    fi
+    chmod 644 "$staging_dir/$filename"
+}
+
+# Keep both installed plugins intact until every download has succeeded.
+download_plugin "karimould/zellij-forgot" "zellij_forgot.wasm"
+download_plugin "dj95/zjstatus" "zjstatus.wasm"
+
+for plugin_file in zellij_forgot.wasm zjstatus.wasm; do
+    mv -f -- "$staging_dir/$plugin_file" "$plugin_dir/$plugin_file"
+done
 echo "All plugins updated!"

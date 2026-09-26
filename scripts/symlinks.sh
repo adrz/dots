@@ -2,10 +2,12 @@
 
 # Get the absolute path of the directory where the script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 CONFIG_FILE="$SCRIPT_DIR/../symlinks.conf"
 
-. $SCRIPT_DIR/utils.sh
+# shellcheck source=scripts/utils.sh
+. "$SCRIPT_DIR/utils.sh"
 
 # Check if configuration file exists
 if [ ! -f "$CONFIG_FILE" ]; then
@@ -13,20 +15,36 @@ if [ ! -f "$CONFIG_FILE" ]; then
     exit 1
 fi
 
+expand_link_path() {
+    local link_path=$1
+    local repo_placeholder="\$(pwd)"
+    local home_placeholder="\$HOME"
+    local braced_home_placeholder="\${HOME}"
+
+    # Expand only the placeholders supported by symlinks.conf, from this repo.
+    link_path=${link_path//"$repo_placeholder"/"$DOTFILES_DIR"}
+    link_path=${link_path//"$braced_home_placeholder"/"$HOME"}
+    link_path=${link_path//"$home_placeholder"/"$HOME"}
+    printf '%s\n' "$link_path"
+}
+
+is_managed_link() {
+    [ -L "$2" ] && [ "$(readlink "$2")" = "$1" ]
+}
+
 validate_symlinks_config() {
     info "Validating symlinks configuration..."
     local has_error=false
+    local source target
 
     # Read dotfile links from the config file and validate
     while IFS=: read -r source target || [ -n "$source" ]; do
         # Skip empty or invalid lines in the config file
-        if [[ -z "$source" || -z "$target" || "$source" == \#* ]]; then
+        if [[ -z "$source" || -z "$target" || "$source" =~ ^[[:space:]]*\# ]]; then
             continue
         fi
 
-        # Evaluate variables
-        source=$(eval echo "$source")
-        target=$(eval echo "$target")
+        source=$(expand_link_path "$source")
 
         # Check if the source file exists
         if [ ! -e "$source" ]; then
@@ -38,7 +56,7 @@ validate_symlinks_config() {
     done <"$CONFIG_FILE"
 
     if [ "$has_error" = true ]; then
-        exit 1
+        return 1
     else
         success "Symlinks configuration is valid!"
     fi
@@ -46,81 +64,99 @@ validate_symlinks_config() {
 
 create_symlinks() {
     info "Creating symbolic links..."
+    local result=0
+    local source target target_dir
 
     # Read dotfile links from the config file
     while IFS=: read -r source target || [ -n "$source" ]; do
 
         # Skip empty or invalid lines in the config file
-        if [[ -z "$source" || -z "$target" || "$source" == \#* ]]; then
+        if [[ -z "$source" || -z "$target" || "$source" =~ ^[[:space:]]*\# ]]; then
             continue
         fi
 
-        # Evaluate variables
-        source=$(eval echo "$source")
-        target=$(eval echo "$target")
+        source=$(expand_link_path "$source")
+        target=$(expand_link_path "$target")
 
         # Check if the source file exists
         if [ ! -e "$source" ]; then
             error "Error: Source file '$source' not found. Skipping link creation for '$target'."
+            result=1
             continue
         fi
 
-        # Check if the symbolic link already exists
-        if [ -L "$target" ]; then
-            warning "Symbolic link already exists: $target"
-        elif [ -f "$target" ]; then
-            warning "File already exists: $target"
+        if is_managed_link "$source" "$target"; then
+            success "Symbolic link already correct: $target"
+        elif [ -e "$target" ] || [ -L "$target" ]; then
+            error "Conflict: '$target' already exists and is not the expected symbolic link."
+            result=1
         else
             # Extract the directory portion of the target path
             target_dir=$(dirname "$target")
 
             # Check if the target directory exists, and if not, create it
             if [ ! -d "$target_dir" ]; then
-                mkdir -p "$target_dir"
+                if ! mkdir -p -- "$target_dir"; then
+                    error "Could not create directory: $target_dir"
+                    result=1
+                    continue
+                fi
                 info "Created directory: $target_dir"
             fi
 
             # Create the symbolic link
-            ln -s "$source" "$target"
-            success "Created symbolic link: $target"
+            if ln -s -- "$source" "$target"; then
+                success "Created symbolic link: $target"
+            else
+                error "Could not create symbolic link: $target"
+                result=1
+            fi
         fi
     done <"$CONFIG_FILE"
+    return "$result"
 }
 
 delete_symlinks() {
     info "Deleting symbolic links..."
+    local result=0
+    local source target
 
-    while IFS=: read -r _ target || [ -n "$target" ]; do
+    while IFS=: read -r source target || [ -n "$source" ]; do
 
-        # Skip empty and invalid lines
-        if [[ -z "$target" ]]; then
+        if [[ -z "$source" || -z "$target" || "$source" =~ ^[[:space:]]*\# ]]; then
             continue
         fi
 
-        # Evaluate variables
-        target=$(eval echo "$target")
+        source=$(expand_link_path "$source")
+        target=$(expand_link_path "$target")
 
-        # Check if the symbolic link or file exists
-        if [ -L "$target" ] || { [ "$include_files" == true ] && [ -f "$target" ]; }; then
-            # Remove the symbolic link or file
-            rm -rf "$target"
-            success "Deleted: $target"
+        if is_managed_link "$source" "$target"; then
+            if rm -- "$target"; then
+                success "Deleted: $target"
+            else
+                error "Could not delete symbolic link: $target"
+                result=1
+            fi
+        elif [ -e "$target" ] || [ -L "$target" ]; then
+            warning "Preserving unmanaged target: $target"
         else
             warning "Not found: $target"
         fi
     done <"$CONFIG_FILE"
+    return "$result"
 }
 
 # Parse arguments
-if [ "$(basename "$0")" = "$(basename "${BASH_SOURCE[0]}")" ]; then
+if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
+    if [ "$#" -ne 1 ]; then
+        error "Usage: $0 [--create | --delete | --validate-only | --help]"
+        exit 1
+    fi
     case "$1" in
     "--create")
         create_symlinks
         ;;
     "--delete")
-        if [ "$2" == "--include-files" ]; then
-            include_files=true
-        fi
         delete_symlinks
         ;;
     "--validate-only")
@@ -128,12 +164,12 @@ if [ "$(basename "$0")" = "$(basename "${BASH_SOURCE[0]}")" ]; then
         ;;
     "--help")
         # Display usage/help message
-        echo "Usage: $0 [--create | --delete [--include-files] | --validate-only | --help]"
+        echo "Usage: $0 [--create | --delete | --validate-only | --help]"
         ;;
     *)
         # Display an error message for unknown arguments
         error "Error: Unknown argument '$1'"
-        error "Usage: $0 [--create | --delete [--include-files] | --validate-only | --help]"
+        error "Usage: $0 [--create | --delete | --validate-only | --help]"
         exit 1
         ;;
     esac

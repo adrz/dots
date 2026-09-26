@@ -19,7 +19,7 @@ jobs:
 
       - name: Run shellcheck
         run: |
-          find scripts -type f -name "*.sh" -exec shellcheck {} \;
+          shellcheck -x scripts/*.sh zellij/update-plugins
 
   lint-lua:
     name: Lint Lua Files
@@ -82,3 +82,6 @@ jobs:
           chmod +x scripts/symlinks.sh
           # Run in a way that validates but doesn't create symlinks
           ./scripts/symlinks.sh --validate-only
+
+      - name: Test installer and plugin update behavior
+        run: python3 -m unittest discover -s tests -v

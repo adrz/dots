@@ -4,7 +4,7 @@ require("config.lazy")
 vim.keymap.set({ "n", "v" }, "<leader>d", '"_d', { desc = "Delete without copying" })
 vim.keymap.set({ "n", "v" }, "<leader>D", '"_D', { desc = "Delete line without copying" })
 vim.opt.clipboard = "unnamedplus"
---vim.g.autoformat = false
+vim.g.autoformat = false
 --
 -- vim.g.clipboard = {
 --   name = "OSC 52",

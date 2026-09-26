@@ -93,16 +93,14 @@ alias vim="nvim"
 alias ls="lsd -lh"
 alias lsm="lsd -lhtr"
 
-# Zoxide (better directory navigation)
-eval "$(zoxide init zsh)"
-alias cd="z"
 
 # git checkout
 alias gc="git checkout"
 
 # ssh to machine
+alias ssh_server="ssh moka@moka-server" 
 alias ssh_pelleport="ssh -J moka@moka-server adrien@192.168.123.141"
-alias ssh_pelleport_louis="ssh -J moka@moka-server moka@192.168.123.202"
+alias ssh_louis="ssh -J moka@moka-server moka@192.168.123.202"
 alias ssh_paul="ssh -J moka@moka-server paul@192.168.123.77"
 alias ssh_ccl="ssh -J moka@moka-server moka@192.168.123.9"
 alias ssh_ccl3="ssh -J moka@moka-server moka@192.168.123.153"
@@ -329,10 +327,10 @@ auto_venv_switch() {
 
 # Use add-zsh-hook to add the function to chpwd, which runs on dir change
 autoload -U add-zsh-hook
-add-zsh-hook chpwd auto_venv_switch
+# add-zsh-hook chpwd auto_venv_switch
 
 # Run the function once at shell startup
-auto_venv_switch
+# auto_venv_switch
 
 
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
@@ -362,3 +360,13 @@ export PATH=/Users/dude/.opencode/bin:$PATH
 
 # Added by Antigravity
 export PATH="/Users/dude/.antigravity/antigravity/bin:$PATH"
+
+
+# Zoxide (better directory navigation)
+eval "$(zoxide init zsh)"
+alias cd="z"
+export _ZO_DOCTOR=0
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/dude/.local/bin:$PATH"

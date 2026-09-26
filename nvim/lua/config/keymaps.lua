@@ -8,3 +8,10 @@ vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", {
   silent = true,
   desc = "Ouvrir la fenêtre de diagnostic", -- Petite description, c'est une bonne pratique
 })
+
+-- Yank absolute path to the system clipboard
+vim.keymap.set('n', '<leader>cp', function()
+    local path = vim.fn.expand('%:p')
+    vim.fn.setreg('+', path)
+    vim.notify("Copied path: " .. path, vim.log.levels.INFO)
+end, { desc = "Copy absolute file path" })
